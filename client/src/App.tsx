@@ -18,6 +18,9 @@ function App() {
           })
               .then(res => console.debug(res))}
           >Test Ping Discord Bot</button>
+          <a href={'https://discord.com/api/oauth2/authorize?client_id=994345551258730617&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fenlist&response_type=code&scope=identify'}>
+              Authenticate with discord.
+          </a>
       </header>
     </div>
   );
