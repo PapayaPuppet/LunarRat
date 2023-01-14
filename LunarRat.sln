@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LunarRat", "LunarRat\LunarRat.csproj", "{78D69736-353B-43E6-A971-7ADAC2422D69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LunarRat", "database\LunarRat.csproj", "{8A7F3209-9265-4C89-A4F4-DEC679A180BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78D69736-353B-43E6-A971-7ADAC2422D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78D69736-353B-43E6-A971-7ADAC2422D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78D69736-353B-43E6-A971-7ADAC2422D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78D69736-353B-43E6-A971-7ADAC2422D69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A7F3209-9265-4C89-A4F4-DEC679A180BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A7F3209-9265-4C89-A4F4-DEC679A180BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A7F3209-9265-4C89-A4F4-DEC679A180BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A7F3209-9265-4C89-A4F4-DEC679A180BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

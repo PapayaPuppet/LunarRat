@@ -70,8 +70,6 @@ app.get('/api/authenticate', (req: Request, res: Response) => {
             res.status(401)
             res.send(err.response.data)
         })
-
-
 })
 
 app.get('/api/identity', (req: Request, res: Response) => {
