@@ -1,17 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios'
-import {useSearchParams} from 'react-router-dom'
+import {redirect, useSearchParams} from 'react-router-dom'
+import Cookies from "universal-cookie";
+import {DiscordToken} from "@shared/discord";
 
 export default (): JSX.Element => {
-    const [accessToken, setAccessToken] = useState<any>(null)
-    const [user, setUser] = useState<any>(null)
-    let [searchParams, setSearchParams] = useSearchParams();
+    let [params, _] = useSearchParams()
+    const [user, setUser] = useState(null)
+    const [authIsLoading, setAuthIsLoading] = useState<boolean>(false)
+    const [identityIsLoading, setIdentityIsLoading] = useState<boolean>(false)
 
-    console.log(accessToken)
+    function handleUserAuthenticated(token: any) {
+        //todo: handle if user already exists
+        const cookies = new Cookies()
 
-    function exchangeDiscordToken(token: string) {
+        if (!cookies.get(DiscordToken.Identity))
+            cookies.set(DiscordToken.Identity, token.access_token)
+        console.log('redirecting')
+        redirect('/')
+    }
+
+    useEffect(() => {
+        setAuthIsLoading(true)
         axios
-            .get(`http://localhost:8080/api/authenticate?code=${token}`)
+            .get(`http://localhost:8080/api/auth/discord?code=${params.get('code')}`)
+            .then(res => {
+                //bad for now
+                handleUserAuthenticated(res.data)
+                setIdentityIsLoading(true)
+                //return axios.get(`http://localhost:8080/api/identity/discord?accessToken=${res.data.access_token}`)
+            })
+            //.then(res => setUser(res.data))
+            .catch(err => console.debug(err))
+            .finally(() => {
+                setAuthIsLoading(false)
+                setIdentityIsLoading(false)
+            })
+    }, [])
+
+    return (
+        <div>
+            <Loading isLoading={authIsLoading} message='Authenticating...' />
+            <Loading isLoading={identityIsLoading} message='Fetching identity...' />
+            <DisplayIdentity user={user} />
+        </div>
+
+    )
+}
+
+interface LoadingProps {
+    isLoading: boolean
+    message: string
+}
+
+const Loading = ({isLoading, message}: LoadingProps): JSX.Element => {
+    if (!isLoading)
+        return <></>
+
+    return (
+        <p>{message}</p>
+    )
+}
+
+/*
+function exchangeDiscordToken(token: string) {
+        axios
+            .get(`http://localhost:8080/api/identity?code=${token}`)
             .then(res => {
                 setAccessToken(res.data)
             })
@@ -27,24 +81,7 @@ export default (): JSX.Element => {
             })
             .catch(err => console.debug(err))
     }
-
-    return (
-        <div>
-            <button onClick={() => exchangeDiscordToken(searchParams.get('code') ?? '')}>
-                Auth
-            </button>
-            {
-                accessToken ?
-                    <button onClick={() => getDiscordIdentity(accessToken.access_token)}>Get Identity</button>
-                    : <p>No access_token exists</p>
-            }
-            <div>
-                <DisplayIdentity user={user} />
-            </div>
-        </div>
-
-    )
-}
+ */
 
 const DisplayIdentity = ({user}: any) => {
     console.log(user)

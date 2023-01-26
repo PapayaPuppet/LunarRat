@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = "sqlserver://localhost:1191;database=LunarRat;integratedSecurity=True;trustServerCertificate=true;schema=LR;"
+}
+
+model CharacterSheet {
+  CharacterSheetGuid String   @id(map: "PK_CharacterSheet") @default(dbgenerated("newid()"), map: "DF__Character__Chara__5CD6CB2B") @db.UniqueIdentifier
+  UserGuid           String   @db.UniqueIdentifier
+  CharacterName      String   @db.NVarChar(450)
+  LastEditedAt       DateTime
+  Owner              User     @relation(fields: [UserGuid], references: [UserGuid], onUpdate: NoAction, map: "FK_CharacterSheet_User_UserGuid")
+
+  @@unique([UserGuid, CharacterName], map: "IX_CharacterSheet_UserGuid_CharacterName")
+}
+
+model DiscordToken {
+  TokenGuid    String   @id(map: "PK_DiscordToken") @default(dbgenerated("newid()"), map: "DF__DiscordTo__Token__5BE2A6F2") @db.UniqueIdentifier
+  UserGuid     String   @db.UniqueIdentifier
+  AccessToken  String   @db.NVarChar(Max)
+  RefreshToken String   @db.NVarChar(Max)
+  Scope        String   @db.NVarChar(Max)
+  TokenType    Int
+  GeneratedAt  DateTime
+  ExpiresAt    DateTime
+  Owner        User     @relation(fields: [UserGuid], references: [UserGuid], onUpdate: NoAction, map: "FK_DiscordToken_User_UserGuid")
+
+  @@unique([UserGuid, TokenType], map: "IX_DiscordToken_UserGuid_TokenType")
+}
+
+model Roll {
+  RollGuid    String @id(map: "PK_Roll") @default(dbgenerated("newid()"), map: "DF__Roll__RollGuid__48CFD27E") @db.UniqueIdentifier
+  RollType    Int
+  Number      Int
+  Label       String @db.NVarChar(Max)
+  Description String @db.NVarChar(Max)
+}
+
+model User {
+  UserGuid       String           @id(map: "PK_User") @default(dbgenerated("newid()"), map: "DF__User__UserGuid__5AEE82B9") @db.UniqueIdentifier
+  Name           String           @db.NVarChar(Max)
+  DiscordId      String           @db.NVarChar(Max)
+  Locale         String           @db.NVarChar(Max)
+  CharacterSheet CharacterSheet[]
+  DiscordToken   DiscordToken[]
+}

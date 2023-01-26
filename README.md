@@ -1,0 +1,1 @@
+Discord bot, website, and repository for roleplay on Guild Wars 2.
